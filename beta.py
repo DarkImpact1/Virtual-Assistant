@@ -27,7 +27,7 @@ if __name__ == "__main__":
             result = wp.summary(query, sentences = 2)
             func.speak("According to wikipedia")
             func.speak(result)
-        elif "wish me in" in query:
+        elif "wish me" in query:
             func.wishme()
 
         elif "open youtube" in query:
@@ -53,11 +53,9 @@ if __name__ == "__main__":
             if len(songs) == 0:
                 func.speak("Sorry! You don't have any song on your PC")
             else:
-                os.startfile(os.path.join(music_dir,songs[rn.randint(0,len(songs))])) 
+                os.startfile(os.path.join(music_dir,songs[rn.randint(0,len(songs)-1)])) 
+                
 
-
-        elif "close music" in query:
-            os.close(os.path.join("D\\MUSIC",))
         elif "time" in query:
             time = dt.datetime.now().strftime("%H:%M:%S")
             func.speak(f"sir, The time is {time}")
@@ -69,9 +67,13 @@ if __name__ == "__main__":
             reply=["you welcome!","welcome whole Heartedly","My pleasure","I'm glad to help you",]
             func.speak(reply[rn.randint(0,len(reply)-1)])
 
-        elif "vs code" in query:
+        elif "open vs code" in query:
             codepath = "C:\\Microsoft VS Code\\Code.exe"
             os.startfile(codepath)
+        # elif "close vs code" in query:
+        #     codepath = "C:\\Microsoft VS Code\\Code.exe"
+
+        #     os.close(codepath)
 
 
         elif "send email" in query:
@@ -84,17 +86,8 @@ if __name__ == "__main__":
             func.speak(f" sir, email sent to {to}")
 
 # --------------------- changeing ai ----------------------------------------
-
-        elif ("switch to female" in query) or ("female" in query):
-            func.speak("switching to female")
-            machine.setProperty('voice',voices[1].id)
-            voice_add=1
-            func.speak("Hello sir, I'm here to help you ")
-
-        elif ("switch to male" in query ) or ("male ai" in query):
-            machine.setProperty('voice',voices[0].id)
-            voice_add=0
-            func.speak("Hello sir, I'm here to help you ")
+        elif "change your gender" in query or ("female" in query):
+            voice_add = func.gender(voice_add)
 
 
         elif "change your name" in query:
@@ -103,7 +96,11 @@ if __name__ == "__main__":
             func.changeAIname(ainame)
 
         elif "your name" in query:
-            func.yourname()
+            func.yourname(name)
+
+        elif "how are you" in query:
+            ans=["I'm good","I'm fine"]
+            func.speak(ans[rn.randint(0,len(ans))])
 
         elif "change my name" in query:
             func.speak("What should I call you ?")
@@ -113,16 +110,16 @@ if __name__ == "__main__":
         elif "my name" in query:
             func.myname(name)
         
-        elif "mata" in query:
-            func.speak("Hello, Mai tumhari mata bol rhi hu")
-            func.speak("Aur beta kaise ho?")
 
         elif "wait" in query or ("next command " in query):
-            func.speak("Ok sir, I'm waitting")
+            func.speak("Ok sir, I'm waiting")
             
 
 
-        elif ("quit" in query) or ("exit" in query) or ("bye" in query) or ("good bye in query"):
+        elif ("quit" in query) or ("exit" in query) or ("bye" in query):
             func.speak("Good bye sir, ... It was nice to meet you ")
             start = False
-        
+        else:
+
+            func.speak("ask something else sir, Please")
+            

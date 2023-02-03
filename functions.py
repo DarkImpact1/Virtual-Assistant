@@ -12,13 +12,14 @@ import functions as func
 machine = py.init('sapi5')
 voices = machine.getProperty("voices")
 machine.setProperty('voice',voices[0].id)# setting male voice to change it in female voice replace 0 by 1
-voice_add=0
+new_voice_address = 0
 
 def takeorder():
     recogniser = sp.Recognizer()
     with sp.Microphone() as source:
         print("Listening ......")
         recogniser.pause_threshold = 1
+        recogniser.energy_threshold= 300
         audio = recogniser.listen(source)
 
     try:
@@ -36,12 +37,41 @@ def speak(audio):
     machine.runAndWait()
 
 def yourname(name):
-    speak("My name is ", voices[voice_add].name)
+    speak("My name is " + voices[new_voice_address].name)
+
+def gender(voice_address):
+    
+    if voice_address == 0:
+        speak("switching.... to female")
+        new_voice_address = 1
+    else:
+        speak("switching to male ")
+        new_voice_address = 0
+
+    machine.setProperty("voice", voices[new_voice_address].id)
+    speak("Hello sir, how may I help you ?")
+    return new_voice_address
+
+    
+        # elif ("switch to female" in query) or ("female" in query):
+        #     func.speak("switching to female")
+        #     machine.setProperty('voice',voices[1].id)
+        #     voice_add=1
+        #     func.speak("Hello sir, I'm here to help you ")
+
+        # elif ("switch to male" in query ) or ("male ai" in query):
+        #     machine.setProperty('voice',voices[0].id)
+        #     voice_add=0
+        #     func.speak("Hello sir, I'm here to help you ")
+
+
+
+
 
 def changeAIname(ainame):
     speak(f"OK, I'll remember {ainame} is my name")
-    voices[voice_add].name=ainame
-    return voices[voice_add].name
+    voices[new_voice_address].name=ainame
+    return voices[new_voice_address].name
 
 def myname(name):
     if len(name)==0:
